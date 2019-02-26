@@ -1,0 +1,324 @@
+[
+  {
+    "type": "conversationUpdate",
+    "membersAdded": [
+      {
+        "id": "1",
+        "name": "Bot"
+      }
+    ],
+    "channelId": "emulator",
+    "conversation": {
+      "id": "82f12e30-39c7-11e9-8e0b-7bb07daffcf6|livechat"
+    },
+    "id": "82f37820-39c7-11e9-a844-e9038141566a",
+    "localTimestamp": "2019-02-26T13:07:46+00:00",
+    "recipient": {
+      "id": "1",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "timestamp": "2019-02-26T13:07:46.977Z",
+    "from": {
+      "id": "9688ae1a-6717-4c58-8e04-803960606608",
+      "name": "User"
+    },
+    "locale": "",
+    "serviceUrl": "http://localhost:64899"
+  },
+  {
+    "type": "conversationUpdate",
+    "membersAdded": [
+      {
+        "id": "9688ae1a-6717-4c58-8e04-803960606608",
+        "name": "User"
+      }
+    ],
+    "channelId": "emulator",
+    "conversation": {
+      "id": "82f12e30-39c7-11e9-8e0b-7bb07daffcf6|livechat"
+    },
+    "id": "82f37821-39c7-11e9-a844-e9038141566a",
+    "localTimestamp": "2019-02-26T13:07:46+00:00",
+    "recipient": {
+      "id": "1",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "timestamp": "2019-02-26T13:07:46.978Z",
+    "from": {
+      "id": "9688ae1a-6717-4c58-8e04-803960606608",
+      "name": "User"
+    },
+    "locale": "",
+    "serviceUrl": "http://localhost:64899"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "http://localhost:64899",
+    "channelId": "emulator",
+    "from": {
+      "id": "1",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "82f12e30-39c7-11e9-8e0b-7bb07daffcf6|livechat"
+    },
+    "recipient": {
+      "id": "9688ae1a-6717-4c58-8e04-803960606608",
+      "role": "user"
+    },
+    "text": "Hello! Nice to meet you, my name is Pika. \n                                            \n I can help you plan your travel route. \n                                            \n Where would you like to go today?",
+    "inputHint": "acceptingInput",
+    "replyToId": "82f37821-39c7-11e9-a844-e9038141566a",
+    "id": "82f4d7b0-39c7-11e9-a844-e9038141566a",
+    "localTimestamp": "2019-02-26T13:07:46+00:00",
+    "timestamp": "2019-02-26T13:07:46.987Z",
+    "locale": ""
+  },
+  {
+    "type": "message",
+    "text": "Hi, i am currently in trinity, i would like to go to rds",
+    "from": {
+      "id": "9688ae1a-6717-4c58-8e04-803960606608",
+      "name": "User"
+    },
+    "locale": "",
+    "textFormat": "plain",
+    "timestamp": "2019-02-26T13:08:07.851Z",
+    "channelData": {
+      "clientActivityId": "1551186466965.3375071264631395.0"
+    },
+    "entities": [
+      {
+        "type": "ClientCapabilities",
+        "requiresBotState": true,
+        "supportsTts": true,
+        "supportsListening": true
+      }
+    ],
+    "channelId": "emulator",
+    "conversation": {
+      "id": "82f12e30-39c7-11e9-8e0b-7bb07daffcf6|livechat"
+    },
+    "id": "8f646fb0-39c7-11e9-a844-e9038141566a",
+    "localTimestamp": "2019-02-26T13:08:07+00:00",
+    "recipient": {
+      "id": "1",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "serviceUrl": "http://localhost:64899"
+  },
+  {
+    "type": "trace",
+    "serviceUrl": "http://localhost:64899",
+    "channelId": "emulator",
+    "from": {
+      "id": "1",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "82f12e30-39c7-11e9-8e0b-7bb07daffcf6|livechat"
+    },
+    "recipient": {
+      "id": "9688ae1a-6717-4c58-8e04-803960606608",
+      "role": "user"
+    },
+    "replyToId": "8f646fb0-39c7-11e9-a844-e9038141566a",
+    "label": "Luis Trace",
+    "valueType": "https://www.luis.ai/schemas/trace",
+    "value": {
+      "recognizerResult": {
+        "text": "Hi, i am currently in trinity, i would like to go to rds",
+        "intents": {
+          "OriginToDestination": {
+            "score": 0.9865766
+          },
+          "None": {
+            "score": 0.0149687612
+          }
+        },
+        "entities": {
+          "$instance": {
+            "Destination": [
+              {
+                "startIndex": 53,
+                "endIndex": 56,
+                "score": 0.993805468,
+                "text": "rds",
+                "type": "Location::Destination"
+              }
+            ],
+            "Origin": [
+              {
+                "startIndex": 22,
+                "endIndex": 29,
+                "score": 0.8938057,
+                "text": "trinity",
+                "type": "Location::Origin"
+              }
+            ]
+          },
+          "Destination": [
+            "rds"
+          ],
+          "Origin": [
+            "trinity"
+          ]
+        },
+        "luisResult": {
+          "query": "Hi, i am currently in trinity, i would like to go to rds",
+          "topScoringIntent": {
+            "intent": "OriginToDestination",
+            "score": 0.9865766
+          },
+          "intents": [
+            {
+              "intent": "OriginToDestination",
+              "score": 0.9865766
+            },
+            {
+              "intent": "None",
+              "score": 0.0149687612
+            }
+          ],
+          "entities": [
+            {
+              "entity": "rds",
+              "type": "Location::Destination",
+              "startIndex": 53,
+              "endIndex": 55,
+              "score": 0.993805468
+            },
+            {
+              "entity": "trinity",
+              "type": "Location::Origin",
+              "startIndex": 22,
+              "endIndex": 28,
+              "score": 0.8938057
+            }
+          ]
+        }
+      },
+      "luisResult": {
+        "query": "Hi, i am currently in trinity, i would like to go to rds",
+        "topScoringIntent": {
+          "intent": "OriginToDestination",
+          "score": 0.9865766
+        },
+        "intents": [
+          {
+            "intent": "OriginToDestination",
+            "score": 0.9865766
+          },
+          {
+            "intent": "None",
+            "score": 0.0149687612
+          }
+        ],
+        "entities": [
+          {
+            "entity": "rds",
+            "type": "Location::Destination",
+            "startIndex": 53,
+            "endIndex": 55,
+            "score": 0.993805468
+          },
+          {
+            "entity": "trinity",
+            "type": "Location::Origin",
+            "startIndex": 22,
+            "endIndex": 28,
+            "score": 0.8938057
+          }
+        ]
+      },
+      "luisOptions": {
+        "Staging": false
+      },
+      "luisModel": {
+        "ModelID": "3c754517-ccd9-4c13-9bf1-134864cbc5ba"
+      }
+    },
+    "name": "LuisRecognizer",
+    "id": "8fb2b6c0-39c7-11e9-a844-e9038141566a",
+    "localTimestamp": "2019-02-26T13:08:08+00:00",
+    "timestamp": "2019-02-26T13:08:08.364Z",
+    "locale": ""
+  },
+  {
+    "type": "message",
+    "serviceUrl": "http://localhost:64899",
+    "channelId": "emulator",
+    "from": {
+      "id": "1",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "82f12e30-39c7-11e9-8e0b-7bb07daffcf6|livechat"
+    },
+    "recipient": {
+      "id": "9688ae1a-6717-4c58-8e04-803960606608",
+      "role": "user"
+    },
+    "text": "LUIS Top Scoring Intent: OriginToDestination, Score: 0.9865766",
+    "inputHint": "acceptingInput",
+    "replyToId": "8f646fb0-39c7-11e9-a844-e9038141566a",
+    "id": "8fb54ed0-39c7-11e9-a844-e9038141566a",
+    "localTimestamp": "2019-02-26T13:08:08+00:00",
+    "timestamp": "2019-02-26T13:08:08.380Z",
+    "locale": ""
+  },
+  {
+    "type": "message",
+    "serviceUrl": "http://localhost:64899",
+    "channelId": "emulator",
+    "from": {
+      "id": "1",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "82f12e30-39c7-11e9-8e0b-7bb07daffcf6|livechat"
+    },
+    "recipient": {
+      "id": "9688ae1a-6717-4c58-8e04-803960606608",
+      "role": "user"
+    },
+    "text": "LUIS Entity Found: Entity: rds, Score: 0.993805468, Entity Type Location::Destination.",
+    "inputHint": "acceptingInput",
+    "replyToId": "8f646fb0-39c7-11e9-a844-e9038141566a",
+    "id": "8fb63930-39c7-11e9-a844-e9038141566a",
+    "localTimestamp": "2019-02-26T13:08:08+00:00",
+    "timestamp": "2019-02-26T13:08:08.387Z",
+    "locale": ""
+  },
+  {
+    "type": "message",
+    "serviceUrl": "http://localhost:64899",
+    "channelId": "emulator",
+    "from": {
+      "id": "1",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "82f12e30-39c7-11e9-8e0b-7bb07daffcf6|livechat"
+    },
+    "recipient": {
+      "id": "9688ae1a-6717-4c58-8e04-803960606608",
+      "role": "user"
+    },
+    "text": "LUIS Entity Found: Entity: trinity, Score: 0.8938057, Entity Type Location::Origin.",
+    "inputHint": "acceptingInput",
+    "replyToId": "8f646fb0-39c7-11e9-a844-e9038141566a",
+    "id": "8fb72390-39c7-11e9-a844-e9038141566a",
+    "localTimestamp": "2019-02-26T13:08:08+00:00",
+    "timestamp": "2019-02-26T13:08:08.392Z",
+    "locale": ""
+  }
+]

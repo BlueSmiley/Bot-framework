@@ -20,22 +20,6 @@ const { MyBot } = require('./bot');
 const ENV_FILE = path.join(__dirname, '.env');
 dotenv.config({ path: ENV_FILE });
 
-// bot endpoint name as defined in .bot file
-// See https://aka.ms/about-bot-file to learn more about .bot file its use and bot configuration.
-const DEV_ENVIRONMENT = 'development';
-
-// bot name as defined in .bot file
-// See https://aka.ms/about-bot-file to learn more about .bot file its use and bot configuration.
-const BOT_CONFIGURATION = (process.env.NODE_ENV || DEV_ENVIRONMENT);
-
-// Create HTTP server
-const server = restify.createServer();
-server.listen(process.env.port || process.env.PORT || 3978, () => {
-    console.log(`\n${ server.name } listening to ${ server.url }`);
-    console.log(`\nGet Bot Framework Emulator: https://aka.ms/botframework-emulator`);
-    console.log(`\nTo talk to your bot, open my-chat-bot.bot file in the Emulator`);
-});
-
 // .bot file path
 const BOT_FILE = path.join(__dirname, (process.env.botFilePath || ''));
 
@@ -51,8 +35,38 @@ try {
     process.exit();
 }
 
-// Get bot endpoint configuration by service name
+// bot endpoint name as defined in .bot file
+// See https://aka.ms/about-bot-file to learn more about .bot file its use and bot configuration.
+const DEV_ENVIRONMENT = 'development';
+
+// bot name as defined in .bot file
+// See https://aka.ms/about-bot-file to learn more about .bot file its use and bot configuration.
+const BOT_CONFIGURATION = (process.env.NODE_ENV || DEV_ENVIRONMENT);
+
+// Language Understanding (LUIS) service name as defined in the .bot file.YOUR_LUIS_APP_NAME is "LuisBot" in the JavaScript code.
+const LUIS_CONFIGURATION = 'TravelInfo';
+if (!LUIS_CONFIGURATION) {
+    console.error('Make sure to update the index.js file with a LUIS_CONFIGURATION name that matches your .bot file.');
+    process.exit();
+}
+
+// Get endpoint and LUIS configurations by service name.
 const endpointConfig = botConfig.findServiceByNameOrId(BOT_CONFIGURATION);
+const luisConfig = botConfig.findServiceByNameOrId(LUIS_CONFIGURATION);
+
+// Map the contents to the required format for `LuisRecognizer`.
+const luisApplication = {
+    applicationId: luisConfig.appId,
+    endpointKey: luisConfig.subscriptionKey || luisConfig.authoringKey,
+    azureRegion: luisConfig.region
+};
+
+// Create configuration for LuisRecognizer's runtime behavior.
+const luisPredictionOptions = {
+    includeAllIntents: true,
+    log: true,
+    staging: false
+};
 
 // Create adapter.
 // See https://aka.ms/about-bot-adapter to learn more about .bot file its use and bot configuration.
@@ -69,13 +83,27 @@ adapter.onTurnError = async (context, error) => {
     await context.sendActivity(`Oops. Something went wrong!`);
 };
 
-// Create the main dialog.
-const myBot = new MyBot();
+// Create the LuisBot.
+let bot;
+try {
+    bot = new MyBot(luisApplication, luisPredictionOptions);
+} catch (err) {
+    console.error(`[botInitializationError]: ${ err }`);
+    process.exit();
+}
+
+// Create HTTP server
+const server = restify.createServer();
+server.listen(process.env.port || process.env.PORT || 3978, () => {
+    console.log(`\n${ server.name } listening to ${ server.url }`);
+    console.log(`\nGet Bot Framework Emulator: https://aka.ms/botframework-emulator`);
+    console.log(`\nTo talk to your bot, open my-chat-bot.bot file in the Emulator`);
+});
 
 // Listen for incoming requests.
 server.post('/api/messages', (req, res) => {
     adapter.processActivity(req, res, async (context) => {
         // Route to main dialog.
-        await myBot.onTurn(context);
+        await bot.onTurn(context);
     });
 });

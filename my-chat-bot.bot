@@ -8,6 +8,17 @@
             "appId": "",
             "appPassword": "",
             "id": "1"
+        },
+        {
+            "type": "luis",
+            "name": "TravelInfo",
+            "appId": "3c754517-ccd9-4c13-9bf1-134864cbc5ba",
+            "version": "0.1",
+            "authoringKey": "81a9cc54006544a2b89fca485bd4fe39",
+            "subscriptionKey": "81a9cc54006544a2b89fca485bd4fe39",
+            "region": "westus",
+            "id": "158"
+
         }
     ],
     "padlock": "",
