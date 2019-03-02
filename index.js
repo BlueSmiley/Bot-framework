@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+const { translate } = require('./translator');
+
 const dotenv = require('dotenv');
 const path = require('path');
 const restify = require('restify');
@@ -103,6 +105,14 @@ server.listen(process.env.port || process.env.PORT || 3978, () => {
 // Listen for incoming requests.
 server.post('/api/messages', (req, res) => {
     adapter.processActivity(req, res, async (context) => {
+        const translationReponse = await translate(context._activity.text);
+        const translatedQuery = translationReponse[0].translations[0].text;
+        const detectedLanguage = translationReponse[0].detectedLanguage;
+        context._activity.text = translatedQuery;
+
+        // Reply with detected language.
+        await context.sendActivity(
+        `Detected Language ${detectedLanguage.language}: Score ${detectedLanguage.score}`);
         // Route to main dialog.
         await bot.onTurn(context);
     });
