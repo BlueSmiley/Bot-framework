@@ -3,7 +3,6 @@
 
 const { ActivityTypes } = require('botbuilder');
 const { LuisRecognizer } = require('botbuilder-ai');
-const { translate } = require('./translator');
 
 class MyBot {
     constructor(application, luisPredictionOptions, includeApiResults) {
