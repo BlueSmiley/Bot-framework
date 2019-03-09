@@ -12,10 +12,10 @@
         {
             "type": "luis",
             "name": "TravelInfo",
-            "appId": "3c754517-ccd9-4c13-9bf1-134864cbc5ba",
+            "appId": "a9906e0a-bfc7-4375-bcdb-b91fed0d1bcd",
             "version": "0.1",
-            "authoringKey": "81a9cc54006544a2b89fca485bd4fe39",
-            "subscriptionKey": "81a9cc54006544a2b89fca485bd4fe39",
+            "authoringKey": "fa44490b4aaa499f89c9fbe9e72b3940",
+            "subscriptionKey": "fa44490b4aaa499f89c9fbe9e72b3940",
             "region": "westus",
             "id": "158"
 

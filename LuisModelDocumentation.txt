@@ -1,0 +1,31 @@
+OriginToDestination:
+- whens the next bus from marlborough to broombridge
+- How do I get to Windy Arbour from Brides Glen
+- Quickest way to get to Kilmacud
+- What routes are available from Central Park
+- What's the nearest service to Charlemont
+- quickest way to Beechwood
+- best way to get to cherrywood from carrickmines
+- harcourt to dundrum
+- im at smithfield
+- I want to get to connoly but i got lost
+- I seem to be in milltown. tell me how to get back to simmons court
+- im currently in parnell street. What route should I take? My destination is the Museum
+- Where do I go from Four Courts? Im trying to reach Jervis.
+- How can I reach SandyFord
+- Which bus should I take to reach Heuston the quickest
+- Take me to the rds
+- Lets go to Simmons Court from Trinity
+- My destination is Cowper
+- I want to be at Abbey Street by 6
+- I want to go towards St Stephens Green 
+- Bring me from Ranelagh to Milltown
+
+None:
+- Tell me about his area
+- What's the price of this route
+- What is the cheapest route
+- Any good hotels near the rds
+- Whats the closest Tesco
+- I am lost
+- Where is Trinity
