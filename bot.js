@@ -33,7 +33,7 @@ class MyBot {
             //for (let index = 0; index < entityData.length; index++) {
                    // await turnContext.sendActivity('Ok thank you for the information, it looks like you want to go from : ', $,{ entityData,[0]:entity });
                     await turnContext.sendActivity(`Ok thank you, your origin is : ${ entityData[0].entity } and your destination you want to go to is : 
-                    ${ entityData[1].entity }  is this correct?`);
+                    ${ entityData[1].entity }  is this correct?`); // checks to see that the destination and origin are correct
 
                 //}
 
