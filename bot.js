@@ -75,7 +75,7 @@ class MyBot {
             const results = await this.luisRecognizer.recognize(turnContext);
 
             // Get the state properties from the turn context.
-            const userProfile = await this.userProfile.get(turnContext, {});
+            const userProfile = await this.userProfile.get(turnContext, { transport: 'Bus' });
             const conversationData = await this.conversationData.get(
                 turnContext, { promptedForOrigin: false, promptedForDest: false, promptedForTransport: true });
 
@@ -132,6 +132,8 @@ class MyBot {
                     await turnContext.sendActivity(`What form of transport would you like to take?`);
                 } else {
                     // This is where we need to send maps query and return result to user
+                    await turnContext.sendActivity(`So you want to go from : ${ userProfile.origin } to 
+                        ${ userProfile.dest } by ${ userProfile.transport } correct?`);
                     // Reset all flags to allow bot to go through the cycle again
                     conversationData.promptedForDest = false;
                     conversationData.promptedForOrigin = false;
