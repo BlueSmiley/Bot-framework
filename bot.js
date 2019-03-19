@@ -8,50 +8,6 @@ const { LuisRecognizer } = require('botbuilder-ai');
 const CONVERSATION_DATA_PROPERTY = 'conversationData';
 const USER_PROFILE_PROPERTY = 'userProfile';
 
-/*
-const { DialogSet, WaterfallDialog, NumberPrompt, DateTimePrompt, ChoicePrompt, DialogTurnStatus }
-    = require('botbuilder-dialogs');
-const LOCATION_PROMPT = 'locationPrompt';
-
-const DIALOG_STATE_ACCESSOR = 'dialogStateAccessor';
-const RESERVATION_ACCESSOR = 'reservationAccessor';
-
-var builder = function () {
-    return applyStyle.apply(builder, arguments);
-};
-
-class dialogue {
-    constructor(conversationState) {
-        // Creates our state accessor properties.
-        // See https://aka.ms/about-bot-state-accessors to learn more about the bot state and state accessors.
-        this.dialogStateAccessor = conversationState.createProperty(DIALOG_STATE_ACCESSOR);
-        this.reservationAccessor = conversationState.createProperty(RESERVATION_ACCESSOR);
-        this.conversationState = conversationState;
-
-        // Create the dialog set and add the prompts, including custom validation.
-        this.dialogSet = new DialogSet(this.dialogStateAccessor);
-        this.dialogSet.add(new ChoicePrompt(LOCATION_PROMPT));
-
-        // Define the steps of the waterfall dialog and add it to the set.
-        this.dialogSet.add(new WaterfallDialog(RESERVATION_DIALOG, [
-            this.promptForLocation.bind(this),
-        ]));
-    }
-
-    async promptForLocation(stepContext) {
-        // Record the party size information in the current dialog state.
-        stepContext.values.size = stepContext.result;
-
-        // Prompt for location.
-        return await stepContext.prompt(LOCATION_PROMPT, {
-            prompt: 'Please choose a location.',
-            retryPrompt: 'Sorry, please choose a location from the list.',
-            choices: ['Redmond', 'Bellevue', 'Seattle'],
-        });
-    }
-}
-*/
-
 class MyBot {
     constructor(application, luisPredictionOptions, conversationState, userState, includeApiResults) {
         this.luisRecognizer = new LuisRecognizer(application, luisPredictionOptions, true);
@@ -91,9 +47,6 @@ class MyBot {
                     await turnContext.sendActivity(`LUIS Entity Found: Entity: ${ entityData[index].entity },
                     Score: ${ entityData[index].score }, Entity Type ${ entityData[index].type }.`);
                 }
-                await turnContext.sendActivity(`origin is : ${ entityData[0].entity } destination is :
-                    ${ entityData[1].entity }`); // checks to see that the destination and origin are correct
-                // Wrong since orgin and destination doesn't necessarily come in order
                 */
 
                 // Update all newly recognized info
