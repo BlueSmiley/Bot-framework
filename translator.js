@@ -31,8 +31,8 @@ class Translator {
             context._activity.text = trasnlatedResponse[0].translations[0].text;
             await context
                 .sendActivity([
-                  `Detected language: ${ trasnlatedResponse[0].detectedLanguage.language }`,
-                  `Score ${ trasnlatedResponse[0].detectedLanguage.score }`
+                    `Detected language: ${ trasnlatedResponse[0].detectedLanguage.language }`,
+                    `Score ${ trasnlatedResponse[0].detectedLanguage.score }`
                 ].join(' '));
         }
         await next();
