@@ -65,7 +65,10 @@ class MyBot {
                             await turnContext.sendActivity(`origin is : ${ entityData[index].entity }`);
                             break;
                         case 'Query::Transport':
-                            if (entityData[index].entity === 'bus' || entityData[index].entity === 'train' || entityData[index].entity === 'dart' || entityData[index].entity === 'luas') { //    Is case sensitive!!!
+                            if (entityData[index].entity === 'bus' ||
+                                entityData[index].entity === 'train' ||
+                                entityData[index].entity === 'dart' ||
+                                entityData[index].entity === 'luas') {
                                 userProfile.transport = entityData[index].entity;
                                 conversationData.receivedTransport = true;
                                 await turnContext.sendActivity(`transport is : ${ entityData[index].entity }`);
@@ -137,11 +140,6 @@ class MyBot {
         } else if (turnContext.activity.type !== ActivityTypes.ConversationUpdate) {
             // Respond to all other Activity types.
             await turnContext.sendActivity(`[${ turnContext.activity.type }]-type activity detected.`);
-        // } else { // If intent is "None"
-        //     for (let index = 0; index < entityData.length; index++) {
-        //         await turnContext.sendActivity(`LUIS Entity Found: Entity: ${ entityData[index].entity },
-        //         Score: ${ entityData[index].score }, Entity Type ${ entityData[index].type }.`);
-        //     }
         }
     }
 }
