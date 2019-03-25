@@ -33,7 +33,8 @@ class MyBot {
             // Get the state properties from the turn context.
             const userProfile = await this.userProfile.get(turnContext, { transport: 'Bus' });
             const conversationData = await this.conversationData.get(
-                turnContext, { receivedOrigin: false, receivedDest: false, receivedTransport: true, destinationIndex: 0, originIndex: 0, transportIndex: 0
+                turnContext, {
+                    receivedOrigin: false, receivedDest: false, receivedTransport: true, destinationIndex: 0, originIndex: 0, transportIndex: 0
                 });
 
             // Since the LuisRecognizer was configured to include the raw results, get the `topScoringIntent` as specified by LUIS.
@@ -49,28 +50,29 @@ class MyBot {
                     Score: ${ entityData[index].score }, Entity Type ${ entityData[index].type }.`);
                 }
                 */
-
-                // Update all newly recognized info
-                for (let index = 0; index < entityData.length; index++) {
-                    switch (entityData[index].type) {
-                    case 'Destination':
-                        userProfile.dest = entityData[index].entity;
-                        conversationData.receivedDest = true;
-                        await turnContext.sendActivity(`destination is : ${ entityData[index].entity }`);
-                        break;
-                    case 'Origin':
-                        userProfile.origin = entityData[index].entity;
-                        conversationData.receivedOrigin = true;
-                        await turnContext.sendActivity(`origin is : ${ entityData[index].entity }`);
-                        break;
-                    case 'TransportType':
-                        userProfile.transport = entityData[index].entity;
-                        conversationData.receivedTransport = true;
-                        await turnContext.sendActivity(`transport is : ${ entityData[index].entity }`);
-                        break;
-                    default:
-                        await turnContext.sendActivity(`whats happening? : ${ entityData[index].type }`);
-                        break;
+                if (entityData !== undefined) {
+                    // Update all newly recognized info
+                    for (let index = 0; index < entityData.length; index++) {
+                        switch (entityData[index].type) {
+                        case 'Query::Destination':
+                            userProfile.dest = entityData[index].entity;
+                            conversationData.receivedDest = true;
+                            await turnContext.sendActivity(`destination is : ${ entityData[index].entity }`);
+                            break;
+                        case 'Query::Origin':
+                            userProfile.origin = entityData[index].entity;
+                            conversationData.receivedOrigin = true;
+                            await turnContext.sendActivity(`origin is : ${ entityData[index].entity }`);
+                            break;
+                        case 'Query::Transport':
+                            userProfile.transport = entityData[index].entity;
+                            conversationData.receivedTransport = true;
+                            await turnContext.sendActivity(`transport is : ${ entityData[index].entity }`);
+                            break;
+                        default:
+                            await turnContext.sendActivity(`whats happening? : ${ entityData[index].type }`);
+                            break;
+                        }
                     }
                 }
 
@@ -86,19 +88,19 @@ class MyBot {
                     conversationData.destinationIndex = 0;
                     conversationData.originIndex = 0;
                 } else if (!conversationData.receivedDest) {
-                // increment index when asked for destination
+                    // increment index when asked for destination
                     await turnContext.sendActivity('Sorry, I couldnt get your destination, could you rephrase it?');
                     conversationData.destinationIndex++;
                 } else if (!conversationData.receivedOrigin) {
-                // increment index when asked for origin
+                    // increment index when asked for origin
                     await turnContext.sendActivity('Sorry, I couldnt get your origin, could you rephrase it?');
                     conversationData.originIndex++;
                 } else if (!conversationData.receivedTransport) {
-                // increment index when asked for transport
+                    // increment index when asked for transport
                     await turnContext.sendActivity('Sorry, did you mean bus, luas or dart?');
                     conversationData.transportIndex++;
                 } else { //   Success, i.e., has origin, destination and tranportType
-                // This is where we need to send maps query and return result to user
+                    // This is where we need to send maps query and return result to user
                     await turnContext.sendActivity(`So you want to go from : ${ userProfile.origin } to
                             ${ userProfile.dest } by ${ userProfile.transport } correct?`);
                     // Reset all flags to allow bot to go through the cycle again
