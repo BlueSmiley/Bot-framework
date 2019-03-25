@@ -33,9 +33,7 @@ class MyBot {
             // Get the state properties from the turn context.
             const userProfile = await this.userProfile.get(turnContext, { transport: 'Bus' });
             const conversationData = await this.conversationData.get(
-                turnContext, {
-                    promptedForOrigin: false, promptedForDest: false, promptedForTransport: true,
-                    destinationIndex: 0, originIndex: 0, transportIndex: 0
+                turnContext, { receivedOrigin: false, receivedDest: false, receivedTransport: true, destinationIndex: 0, originIndex: 0, transportIndex: 0
                 });
 
             // Since the LuisRecognizer was configured to include the raw results, get the `topScoringIntent` as specified by LUIS.
@@ -55,72 +53,64 @@ class MyBot {
                 // Update all newly recognized info
                 for (let index = 0; index < entityData.length; index++) {
                     switch (entityData[index].type) {
-                        case 'Destination':
-                            userProfile.dest = entityData[index].entity;
-                            conversationData.promptedForDest = true;
-                            await turnContext.sendActivity(`destination is : ${entityData[index].entity}`);
-                            break;
-                        case 'Origin':
-                            userProfile.origin = entityData[index].entity;
-                            conversationData.promptedForOrigin = true;
-                            await turnContext.sendActivity(`origin is : ${entityData[index].entity}`);
-                            //originIndex++;
-                            break;
-                        case 'TransportType':
-                            userProfile.transport = entityData[index].entity;
-                            conversationData.promptedForTransport = true;
-                            await turnContext.sendActivity(`transport is : ${entityData[index].entity}`);
-                            break;
-                        default:
-                            await turnContext.sendActivity(`whats happening? : ${entityData[index].type}`);
-                            break;
+                    case 'Destination':
+                        userProfile.dest = entityData[index].entity;
+                        conversationData.receivedDest = true;
+                        await turnContext.sendActivity(`destination is : ${ entityData[index].entity }`);
+                        break;
+                    case 'Origin':
+                        userProfile.origin = entityData[index].entity;
+                        conversationData.receivedOrigin = true;
+                        await turnContext.sendActivity(`origin is : ${ entityData[index].entity }`);
+                        break;
+                    case 'TransportType':
+                        userProfile.transport = entityData[index].entity;
+                        conversationData.receivedTransport = true;
+                        await turnContext.sendActivity(`transport is : ${ entityData[index].entity }`);
+                        break;
+                    default:
+                        await turnContext.sendActivity(`whats happening? : ${ entityData[index].type }`);
+                        break;
                     }
                 }
 
                 // Save user state and save changes.
                 await this.userProfile.set(turnContext, userProfile);
                 await this.userState.saveChanges(turnContext);
-            }
-            if (!conversationData.promptedForDest) {
-                //increment index when asked for destination
-                conversationData.destinationIndex++;
-                if (conversationData.destinationIndex > 0) {
+                if (conversationData.destinationIndex >= 3 || conversationData.transportIndex >= 3 || conversationData.originIndex >= 3) { //   Failure
+                    await turnContext.sendActivity(`Sorry. I couldn't understand you. Could you rephrase the whole query?`);
+                    conversationData.receivedDest = false;
+                    conversationData.receivedOrigin = false;
+                    conversationData.receivedTransport = true;
+                    conversationData.transportIndex = 0;
+                    conversationData.destinationIndex = 0;
+                    conversationData.originIndex = 0;
+                } else if (!conversationData.receivedDest) {
+                // increment index when asked for destination
                     await turnContext.sendActivity('Sorry, I couldnt get your destination, could you rephrase it?');
-                }
-                else {
-                    await turnContext.sendActivity(`Where would you like to go today?`);
-                }
-            } else if (!conversationData.promptedForOrigin) {
-                //increment index when asked for origin
-                conversationData.originIndex++;
-                if (conversationData.originIndex > 1) {
-                    await turnContext.sendActivity('Sorry, I couldnt get your location, could you rephrase it?');
-                }
-                else {
-                    await turnContext.sendActivity(`Where is your starting location?`);
-                }
-            } else if (!conversationData.promptedForTransport) {
-                //increment index when asked for transport
-                conversationData.transportIndex++;
-                if (conversationData.transportIndex > 1) {
+                    conversationData.destinationIndex++;
+                } else if (!conversationData.receivedOrigin) {
+                // increment index when asked for origin
+                    await turnContext.sendActivity('Sorry, I couldnt get your origin, could you rephrase it?');
+                    conversationData.originIndex++;
+                } else if (!conversationData.receivedTransport) {
+                // increment index when asked for transport
                     await turnContext.sendActivity('Sorry, did you mean bus, luas or dart?');
-                }
-                else {
-                    await turnContext.sendActivity(`What form of transport would you like to take?`);
-                }
-            } else {
+                    conversationData.transportIndex++;
+                } else { //   Success, i.e., has origin, destination and tranportType
                 // This is where we need to send maps query and return result to user
-                await turnContext.sendActivity(`So you want to go from : ${userProfile.origin} to 
-                        ${ userProfile.dest} by ${userProfile.transport} correct?`);
-                // Reset all flags to allow bot to go through the cycle again
-                conversationData.promptedForDest = false;
-                conversationData.promptedForOrigin = false;
-                conversationData.promptedForTransport = true;
-                conversationData.transportIndex = 0;
-                conversationData.destinationIndex = 0;
-                conversationData.originIndex = 0;
+                    await turnContext.sendActivity(`So you want to go from : ${ userProfile.origin } to
+                            ${ userProfile.dest } by ${ userProfile.transport } correct?`);
+                    // Reset all flags to allow bot to go through the cycle again
+                    conversationData.receivedDest = false;
+                    conversationData.receivedOrigin = false;
+                    conversationData.receivedTransport = true;
+                    conversationData.transportIndex = 0;
+                    conversationData.destinationIndex = 0;
+                    conversationData.originIndex = 0;
 
-                await turnContext.sendActivity(`Is there anywhere else you would like to go?`);
+                    await turnContext.sendActivity(`Is there anywhere else you would like to go?`);
+                }
             }
 
             // Update conversation state and save changes.
@@ -137,7 +127,12 @@ class MyBot {
                                             \n Where would you like to go today?`);
         } else if (turnContext.activity.type !== ActivityTypes.ConversationUpdate) {
             // Respond to all other Activity types.
-            await turnContext.sendActivity(`[${turnContext.activity.type}]-type activity detected.`);
+            await turnContext.sendActivity(`[${ turnContext.activity.type }]-type activity detected.`);
+        } else { // If intent is "None"
+            for (let index = 0; index < entityData.length; index++) {
+                await turnContext.sendActivity(`LUIS Entity Found: Entity: ${ entityData[index].entity },
+                Score: ${ entityData[index].score }, Entity Type ${ entityData[index].type }.`);
+            }
         }
     }
 }
