@@ -1,13 +1,11 @@
 const { Translator } = require('./translator');
 
 const mapsClient = require('@google/maps').createClient({
-    key: 'AIzaSyBkXRGxKdzKB3Lo2MsyzipUxQpccCQP8cA',
+    key: process.env.MAPS_KEY,
     Promise: Promise
 });
 
 const removeTags = require('string-strip-html');
-
-function log(d) { console.log(d); return d; }
 
 const parseDirections = (directions) => {
     return directions.json.routes[0].legs[0].steps.map(d => {
@@ -31,7 +29,7 @@ const getDirections = async (origin, destination, mode, language) => {
         transit_mode: [ mode ],
         language,
         mode: 'transit',
-        //region: 'ie'
+        region: 'ie'
     };
 
     return mapsClient
@@ -39,10 +37,6 @@ const getDirections = async (origin, destination, mode, language) => {
         .asPromise()
         .then(parseDirections)
         .then(removeTags)
-        .catch( async () => {return await translateErr(language); });
+        .catch(async () => { return await translateErr(language); });
 };
 module.export = { getDirections };
-(async function main() {
-    console.log(await getDirections('Trinity College Dublin', 'RDS', 'bus', 'es'));
-})();
-

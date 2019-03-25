@@ -4,7 +4,7 @@ const uuidv4 = require('uuid/v4');
 const { ActivityTypes } = require('botbuilder');
 
 class Translator {
-    async onTurn(context, next) {
+    static async translate(text, to) {
         const subscriptionKey = process.env.TRANSLATOR_TEXT_KEY;
         const options = {
             method: 'POST',
@@ -12,7 +12,7 @@ class Translator {
             url: 'translate',
             qs: {
                 'api-version': '3.0',
-                'to': 'en'
+                to
             },
             headers: {
                 'Ocp-Apim-Subscription-Key': subscriptionKey,
@@ -20,19 +20,22 @@ class Translator {
                 'X-ClientTraceId': uuidv4().toString()
             },
             body: [{
-                text: context._activity.text
+                text
             }],
             json: true
         };
+        return request(options);
+    }
 
+    async onTurn(context, next) {
         // Process translation only if the message type is Message.
         if (context._activity.type === ActivityTypes.Message) {
-            const trasnlatedResponse = await request(options);
-            context._activity.text = trasnlatedResponse[0].translations[0].text;
+            const translatedResponse = await Translator.translate(context._activity.text, 'en');
+            context._activity.text = translatedResponse[0].translations[0].text;
             await context
                 .sendActivity([
-                    `Detected language: ${ trasnlatedResponse[0].detectedLanguage.language }`,
-                    `Score ${ trasnlatedResponse[0].detectedLanguage.score }`
+                    `Detected language: ${ translatedResponse[0].detectedLanguage.language }`,
+                    `Score ${ translatedResponse[0].detectedLanguage.score }`
                 ].join(' '));
         }
         await next();
