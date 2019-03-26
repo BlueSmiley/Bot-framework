@@ -1,9 +1,5 @@
+const mapsAPI = require('@google/maps');
 const { Translator } = require('./translator');
-
-const mapsClient = require('@google/maps').createClient({
-    key: process.env.MAPS_KEY,
-    Promise: Promise
-});
 
 const removeTags = require('string-strip-html');
 
@@ -23,6 +19,10 @@ const translateErr = async (language) => {
 };
 
 const getDirections = async (origin, destination, mode, language) => {
+    const mapsClient = mapsAPI.createClient({
+        key: process.env.MAPS_KEY,
+        Promise: Promise
+    });
     const directionsOptions = {
         origin,
         destination,
@@ -39,4 +39,4 @@ const getDirections = async (origin, destination, mode, language) => {
         .then(removeTags)
         .catch(async () => { return await translateErr(language); });
 };
-module.export = { getDirections };
+module.exports = { getDirections };
