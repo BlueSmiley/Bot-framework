@@ -3,6 +3,8 @@ const uuidv4 = require('uuid/v4');
 
 const { ActivityTypes } = require('botbuilder');
 
+const supported_languages = [ 'en', 'es' ];
+
 class Translator {
     static async translate(text, to) {
         const subscriptionKey = process.env.TRANSLATOR_TEXT_KEY;
@@ -32,11 +34,6 @@ class Translator {
         if (context._activity.type === ActivityTypes.Message) {
             const translatedResponse = await Translator.translate(context._activity.text, 'en');
             context._activity.text = translatedResponse[0].translations[0].text;
-            await context
-                .sendActivity([
-                    `Detected language: ${ translatedResponse[0].detectedLanguage.language }`,
-                    `Score ${ translatedResponse[0].detectedLanguage.score }`
-                ].join(' '));
         }
         await next();
     }

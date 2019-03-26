@@ -1,4 +1,21 @@
 OriginToDestination:
+- train to heuston maybe
+- how to get to edmonstown by rail
+- i'd like to use a train to get there
+- i am starting at the bridge
+- rds to trinity
+- trinity to rds
+- whats the closest bus to ranelagh
+- next luas to tallaght
+- any trains from oconnel street to monkstown
+- i would like to take the tram
+- bus from trinity to foxrock
+- bus to trinity from rds
+- bring me from trinity
+- i am in rds
+- i'm at trinity
+- from trinity to rds
+- bring me to trinity
 - whens the next bus from marlborough to broombridge
 - How do I get to Windy Arbour from Brides Glen
 - Quickest way to get to Kilmacud
@@ -22,10 +39,18 @@ OriginToDestination:
 - Bring me from Ranelagh to Milltown
 
 None:
-- Tell me about his area
-- What's the price of this route
-- What is the cheapest route
-- Any good hotels near the rds
-- Whats the closest Tesco
+- Hello
+- yes
+- How to train my dog the quickest
+- How do i learn mandarin?
+- How can I pass my driving test?
+- Where can one learn this power
+- Whats the average arm strength of an ant
+- What walks on four legs in the morning, two in the evening and 3 at night
+- How many miles must a man walk before he is a man
+- How can buses be real if our eyes arent real
+- Spare change please
+- whats the weather like
+- any good hotels near there?
+- who is the greatest of them all?
 - I am lost
-- Where is Trinity

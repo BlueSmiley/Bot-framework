@@ -3,6 +3,7 @@
 
 const { ActivityTypes } = require('botbuilder');
 const { LuisRecognizer } = require('botbuilder-ai');
+const { getDirections } = require('./maps');
 
 // The accessor names for the conversation data and user profile state property accessors.
 const CONVERSATION_DATA_PROPERTY = 'conversationData';
@@ -124,6 +125,7 @@ class MyBot {
                     // This is where we need to send maps query and return result to user
                     await turnContext.sendActivity(`So you want to go from : ${ userProfile.origin } to
                             ${ userProfile.dest } by ${ userProfile.transport } correct?`);
+                    await turnContext.sendActivity(await getDirections(userProfile.origin, userProfile.dest, userProfile.transport, 'en'));
                     // Reset all flags to allow bot to go through the cycle again
                     conversationData.receivedDest = false;
                     conversationData.receivedOrigin = false;
