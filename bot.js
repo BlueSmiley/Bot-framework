@@ -98,15 +98,27 @@ class MyBot {
                     conversationData.originIndex = 0;
                 } else if (!conversationData.receivedDest) {
                     // increment index when asked for destination
-                    await turnContext.sendActivity(`Sorry. I couldn't get your destination. Could you rephrase it?`);
+                    if (conversationData.destinationIndex < 1) {
+                        await turnContext.sendActivity(`What is your destination?`);
+                    } else {
+                        await turnContext.sendActivity(`Sorry. I couldn't get your destination. Could you rephrase it?`);
+                    }
                     conversationData.destinationIndex++;
                 } else if (!conversationData.receivedOrigin) {
-                    // increment index when asked for origin
-                    await turnContext.sendActivity(`Sorry. I couldn't get your origin. Could you rephrase it?`);
+                    // increment index when asked for origin  
+                    if (conversationData.originIndex < 1) {
+                        await turnContext.sendActivity(`What is your origin?`);
+                    } else {
+                        await turnContext.sendActivity(`Sorry. I couldn't get your origin. Could you rephrase it?`);
+                    }
                     conversationData.originIndex++;
                 } else if (!conversationData.receivedTransport) {
                     // increment index when asked for transport
-                    await turnContext.sendActivity(`Sorry. I couldn't get your mode of transport. Could you rephrase it?`);
+                    if (conversationData.transportIndex < 1) {
+                        await turnContext.sendActivity(`What mode of transport would you like to take?`);
+                    } else {
+                        await turnContext.sendActivity(`Sorry. I couldn't get your mode of transport. Could you rephrase it?`);
+                    }
                     conversationData.transportIndex++;
                 } else { //   Success, i.e., has origin, destination and tranportType
                     // This is where we need to send maps query and return result to user
