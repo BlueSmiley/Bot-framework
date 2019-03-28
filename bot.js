@@ -106,7 +106,7 @@ class MyBot {
                     }
                     conversationData.destinationIndex++;
                 } else if (!conversationData.receivedOrigin) {
-                    // increment index when asked for origin  
+                    // increment index when asked for origin
                     if (conversationData.originIndex < 1) {
                         await turnContext.sendActivity(`What is your origin?`);
                     } else {
