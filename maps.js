@@ -1,6 +1,8 @@
 const mapsAPI = require('@google/maps');
 const { Translator } = require('./translator');
-
+const {
+    extractTranlsatedText
+} = require('./utils');
 const removeTags = require('string-strip-html');
 
 const parseDirections = (directions) => {
@@ -15,7 +17,7 @@ const parseDirections = (directions) => {
 const translateErr = async (language) => {
     const errMsg = 'Sorry I did not understand the locations you specified.';
     const translatedResponse = await Translator.translate(errMsg, language);
-    return translatedResponse[0].translations[0].text;
+    return extractTranlsatedText(translatedResponse);
 };
 
 const getDirections = async (origin, destination, mode, language) => {
