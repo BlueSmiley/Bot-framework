@@ -1,9 +1,15 @@
 const request = require('request-promise');
 const uuidv4 = require('uuid/v4');
 
+const {
+    extractDetectedLanguage,
+    extractDetectedLanguageScore,
+    extractTranlsatedText
+} = require('./utils');
+
 const { ActivityTypes } = require('botbuilder');
 
-const supported_languages = [ 'en', 'es' ];
+const supportedLanguages = [ 'en', 'es' ];
 
 class Translator {
     static async translate(text, to) {
@@ -30,10 +36,19 @@ class Translator {
     }
 
     async onTurn(context, next) {
+        const translatedResponse = await Translator.translate(context._activity.text, 'en');
+        const detectedLanguage = extractDetectedLanguage(translatedResponse);
+        if (supportedLanguages.indexOf(detectedLanguage) === -1) {
+            const errMsg = `Sorry ${ detectedLanguage } is not supported yet.`;
+            const errMsgDetectedLanguage = extractTranlsatedText(await Translator.translate(errMsg, detectedLanguage));
+            await context.sendActivity(`${ errMsg }\n${ errMsgDetectedLanguage }`);
+            return;
+        }
         // Process translation only if the message type is Message.
         if (context._activity.type === ActivityTypes.Message) {
-            const translatedResponse = await Translator.translate(context._activity.text, 'en');
-            context._activity.text = translatedResponse[0].translations[0].text;
+            context._activity.detectedLanguageScore = extractDetectedLanguageScore(translatedResponse);
+            context._activity.text = extractTranlsatedText(translatedResponse);
+            context._activity.detectedLanguage = detectedLanguage;
         }
         await next();
     }
