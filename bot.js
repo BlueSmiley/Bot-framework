@@ -4,6 +4,8 @@
 const { ActivityTypes } = require('botbuilder');
 const { LuisRecognizer } = require('botbuilder-ai');
 const { getDirections } = require('./maps');
+const { Translator } = require('./translator');
+const { extractTranlsatedText } = require('./utils');
 
 // The accessor names for the conversation data and user profile state property accessors.
 const CONVERSATION_DATA_PROPERTY = 'conversationData';
@@ -43,6 +45,12 @@ class MyBot {
             // Since the LuisRecognizer was configured to include the raw results, get returned entity data.
             var entityData = results.luisResult.entities;
 
+            var translatedResponse;
+            /* Used for debugging detected language
+            if (!turnContext.activity.detectedLanguage) {
+                await turnContext.sendActivity(turnContext.activity.detectedLanguage);
+            }
+            */
             if (topIntent.intent !== 'None') {
                 /*
                 await turnContext.sendActivity(`LUIS Top Scoring Intent: ${ topIntent.intent }, Score: ${ topIntent.score }`);
@@ -58,12 +66,18 @@ class MyBot {
                         case 'Query::Destination':
                             userProfile.dest = entityData[index].entity;
                             conversationData.receivedDest = true;
-                            await turnContext.sendActivity(`destination is : ${ entityData[index].entity }`);
+                            translatedResponse = await Translator.translate(
+                                `destination is : ${ entityData[index].entity }`,
+                                turnContext.activity.detectedLanguage);
+                            await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                             break;
                         case 'Query::Origin':
                             userProfile.origin = entityData[index].entity;
                             conversationData.receivedOrigin = true;
-                            await turnContext.sendActivity(`origin is : ${ entityData[index].entity }`);
+                            translatedResponse = await Translator.translate(
+                                `origin is : ${ entityData[index].entity }`,
+                                turnContext.activity.detectedLanguage);
+                            await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                             break;
                         case 'Query::Transport':
                             if (entityData[index].entity === 'bus' ||
@@ -72,13 +86,23 @@ class MyBot {
                                 entityData[index].entity === 'luas') {
                                 userProfile.transport = entityData[index].entity;
                                 conversationData.receivedTransport = true;
-                                await turnContext.sendActivity(`transport is : ${ entityData[index].entity }`);
+                                translatedResponse = await Translator.translate(
+                                    `transport is : ${ entityData[index].entity }`,
+                                    turnContext.activity.detectedLanguage);
+                                await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                             } else {
-                                await turnContext.sendActivity(`I can't offer information for that mode of transport.`);
+                                translatedResponse = await Translator.translate(
+                                    `I can't offer information for that mode of transport.`,
+                                    turnContext.activity.detectedLanguage);
+                                await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                             }
                             break;
                         default:
-                            await turnContext.sendActivity(`whats happening? : ${ entityData[index].type }`);
+                        // debug for when luis model recognizes an entity not in this list, which shouldn't happen
+                            translatedResponse = await Translator.translate(
+                                `whats happening? : ${ entityData[index].type }`,
+                                turnContext.activity.detectedLanguage);
+                            await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                             break;
                         }
                     }
@@ -90,7 +114,10 @@ class MyBot {
                 if ((!conversationData.receivedDest && conversationData.destinationIndex >= 3) ||
                     (!conversationData.receivedOrigin && conversationData.transportIndex >= 3) ||
                     (!conversationData.receivedTransport && conversationData.originIndex >= 3)) { //   Failure
-                    await turnContext.sendActivity(`Sorry. I couldn't understand you. Could you rephrase the whole query?`);
+                    const translatedResponse = await Translator.translate(
+                        `Sorry. I couldn't understand you. Could you rephrase the whole query?`,
+                        turnContext.activity.detectedLanguage);
+                    await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                     conversationData.receivedDest = false;
                     conversationData.receivedOrigin = false;
                     conversationData.receivedTransport = false;
@@ -100,32 +127,54 @@ class MyBot {
                 } else if (!conversationData.receivedDest) {
                     // increment index when asked for destination
                     if (conversationData.destinationIndex < 1) {
-                        await turnContext.sendActivity(`What is your destination?`);
+                        translatedResponse = await Translator.translate(
+                            'What is your destination',
+                            turnContext.activity.detectedLanguage);
+                        await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                     } else {
-                        await turnContext.sendActivity(`Sorry. I couldn't get your destination. Could you rephrase it?`);
+                        translatedResponse = await Translator.translate(
+                            `Sorry. I couldn't get your destination. Could you rephrase it?`,
+                            turnContext.activity.detectedLanguage);
+                        await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                     }
                     conversationData.destinationIndex++;
                 } else if (!conversationData.receivedOrigin) {
                     // increment index when asked for origin
                     if (conversationData.originIndex < 1) {
-                        await turnContext.sendActivity(`What is your origin?`);
+                        translatedResponse = await Translator.translate(
+                            `What is your origin?`,
+                            turnContext.activity.detectedLanguage);
+                        await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                     } else {
-                        await turnContext.sendActivity(`Sorry. I couldn't get your origin. Could you rephrase it?`);
+                        translatedResponse = await Translator.translate(
+                            `Sorry. I couldn't get your origin. Could you rephrase it?`,
+                            turnContext.activity.detectedLanguage);
+                        await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                     }
                     conversationData.originIndex++;
                 } else if (!conversationData.receivedTransport) {
                     // increment index when asked for transport
                     if (conversationData.transportIndex < 1) {
-                        await turnContext.sendActivity(`What mode of transport would you like to take?`);
+                        translatedResponse = await Translator.translate(
+                            `What mode of transport would you like to take?`,
+                            turnContext.activity.detectedLanguage);
+                        await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                     } else {
-                        await turnContext.sendActivity(`Sorry. I couldn't get your mode of transport. Could you rephrase it?`);
+                        translatedResponse = await Translator.translate(
+                            `Sorry. I couldn't get your mode of transport. Could you rephrase it?`,
+                            turnContext.activity.detectedLanguage);
+                        await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                     }
                     conversationData.transportIndex++;
                 } else { //   Success, i.e., has origin, destination and tranportType
                     // This is where we need to send maps query and return result to user
-                    await turnContext.sendActivity(`So you want to go from : ${ userProfile.origin } to
-                            ${ userProfile.dest } by ${ userProfile.transport } correct?`);
-                    await turnContext.sendActivity(await getDirections(userProfile.origin, userProfile.dest, userProfile.transport, 'en'));
+                    translatedResponse = await Translator.translate(
+                        `So you want to go from : ${ userProfile.origin } to ${ userProfile.dest } by ${ userProfile.transport } correct?`,
+                        turnContext.activity.detectedLanguage);
+                    await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
+
+                    await turnContext.sendActivity(await getDirections(userProfile.origin, userProfile.dest, userProfile.transport,
+                        turnContext.activity.detectedLanguage));
                     // Reset all flags to allow bot to go through the cycle again
                     conversationData.receivedDest = false;
                     conversationData.receivedOrigin = false;
@@ -134,10 +183,16 @@ class MyBot {
                     conversationData.destinationIndex = 0;
                     conversationData.originIndex = 0;
 
-                    await turnContext.sendActivity(`Is there anywhere else you would like to go?`);
+                    translatedResponse = await Translator.translate(
+                        `Is there anywhere else you would like to go?`,
+                        turnContext.activity.detectedLanguage);
+                    await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                 }
             } else { //  intent === 'None'
-                await turnContext.sendActivity(`Sorry. I didn't understand that. I can only offer Transport information...`);
+                translatedResponse = await Translator.translate(
+                    `Sorry. I didn't understand that. I can only offer Transport information...`,
+                    turnContext.activity.detectedLanguage);
+                await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
             }
             // Update conversation state and save changes.
             await this.conversationData.set(turnContext, conversationData);
@@ -155,6 +210,11 @@ class MyBot {
             // Respond to all other Activity types.
             await turnContext.sendActivity(`[${ turnContext.activity.type }]-type activity detected.`);
         }
+    }
+
+    async translateAndExtract(turnContext, text) {
+        const translatedResponse = await Translator.translate(text, turnContext.activity.detectedLanguage);
+        return extractTranlsatedText(translatedResponse);
     }
 }
 module.exports.MyBot = MyBot;
