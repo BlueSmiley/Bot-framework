@@ -36,16 +36,16 @@ class Translator {
     }
 
     async onTurn(context, next) {
-        const translatedResponse = await Translator.translate(context._activity.text, 'en');
-        const detectedLanguage = extractDetectedLanguage(translatedResponse);
-        if (supportedLanguages.indexOf(detectedLanguage) === -1) {
-            const errMsg = `Sorry ${ detectedLanguage } is not supported yet.`;
-            const errMsgDetectedLanguage = extractTranlsatedText(await Translator.translate(errMsg, detectedLanguage));
-            await context.sendActivity(`${ errMsg }\n${ errMsgDetectedLanguage }`);
-            return;
-        }
         // Process translation only if the message type is Message.
         if (context._activity.type === ActivityTypes.Message) {
+            const translatedResponse = await Translator.translate(context._activity.text, 'en');
+            const detectedLanguage = extractDetectedLanguage(translatedResponse);
+            if (supportedLanguages.indexOf(detectedLanguage) === -1) {
+                const errMsg = `Sorry ${ detectedLanguage } is not supported yet.`;
+                const errMsgDetectedLanguage = extractTranlsatedText(await Translator.translate(errMsg, detectedLanguage));
+                await context.sendActivity(`${ errMsg }\n${ errMsgDetectedLanguage }`);
+                return;
+            }
             context._activity.detectedLanguageScore = extractDetectedLanguageScore(translatedResponse);
             context._activity.text = extractTranlsatedText(translatedResponse);
             context._activity.detectedLanguage = detectedLanguage;
