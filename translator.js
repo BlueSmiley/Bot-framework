@@ -1,6 +1,6 @@
 const request = require('request-promise');
 const uuidv4 = require('uuid/v4');
-
+const iso2Lang = require('./iso2lang.json');
 const {
     extractDetectedLanguage,
     extractDetectedLanguageScore,
@@ -41,7 +41,7 @@ class Translator {
             const translatedResponse = await Translator.translate(context._activity.text, 'en');
             const detectedLanguage = extractDetectedLanguage(translatedResponse);
             if (supportedLanguages.indexOf(detectedLanguage) === -1) {
-                const errMsg = `Sorry ${ detectedLanguage } is not supported yet.`;
+                const errMsg = `Sorry ${ iso2Lang[detectedLanguage] || detectedLanguage } is not supported yet.`;
                 const errMsgDetectedLanguage = extractTranlsatedText(await Translator.translate(errMsg, detectedLanguage));
                 await context.sendActivity(`${ errMsg }\n${ errMsgDetectedLanguage }`);
                 return;
