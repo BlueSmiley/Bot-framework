@@ -9,7 +9,7 @@ const {
 
 const { ActivityTypes } = require('botbuilder');
 
-const supportedLanguages = [ 'en', 'es' ];
+const supportedLanguages = [ 'en', 'es', 'fr' ];
 
 class Translator {
     static async translate(text, to) {
