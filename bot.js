@@ -80,7 +80,7 @@ class MyBot {
                                 //await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                             } else {
                                 translatedResponse = await Translator.translate(
-                                    `I can't offer information for that mode of transport.`,
+                                    `I'm sorry, I can't offer information for that mode of transport.`,
                                     turnContext.activity.detectedLanguage);
                                 await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                             }
@@ -103,7 +103,8 @@ class MyBot {
                     (!conversationData.receivedOrigin && conversationData.transportIndex >= 3) ||
                     (!conversationData.receivedTransport && conversationData.originIndex >= 3)) { //   Failure
                     const translatedResponse = await Translator.translate(
-                        `Sorry. I couldn't understand you. Could you rephrase the whole query?`,
+                        `Sorry. I couldn't understand you. Could you rephrase the whole query?
+                        \ne.g. I would like to go to Trinity from the RDS by train`,
                         turnContext.activity.detectedLanguage);
                     await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                     conversationData.receivedDest = false;
@@ -122,7 +123,8 @@ class MyBot {
                         await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                     } else {
                         translatedResponse = await Translator.translate(
-                            `Sorry. I couldn't get your destination. Could you rephrase it?`,
+                            `Sorry. I couldn't get your destination. Could you rephrase it?
+                            \ne.g. Bring me to Leeson Street`,
                             turnContext.activity.detectedLanguage);
                         await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                     }
@@ -137,7 +139,8 @@ class MyBot {
                         await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                     } else {
                         translatedResponse = await Translator.translate(
-                            `Sorry. I couldn't get your origin. Could you rephrase it?`,
+                            `Sorry. I couldn't get your origin. Could you rephrase it?
+                            \ne.g. I am at Henry Street.`,
                             turnContext.activity.detectedLanguage);
                         await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                     }
@@ -152,7 +155,8 @@ class MyBot {
                         await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                     } else {
                         translatedResponse = await Translator.translate(
-                            `Sorry. I couldn't get your mode of transport. Could you rephrase it?`,
+                            `Sorry. I couldn't get your mode of transport. Could you rephrase it?
+                            \ne.g. I would like to take the bus.`,
                             turnContext.activity.detectedLanguage);
                         await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                     }
