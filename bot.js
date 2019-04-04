@@ -107,7 +107,7 @@ class MyBot {
                         translatedResponse = await Translator.translate(
                             'What is your destination',
                             turnContext.activity.detectedLanguage);
-                            conversationData.asked = 1;
+                        conversationData.asked = 1;
                         await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                     } else {
                         translatedResponse = await Translator.translate(
@@ -123,7 +123,7 @@ class MyBot {
                         translatedResponse = await Translator.translate(
                             `What is your origin?`,
                             turnContext.activity.detectedLanguage);
-                            conversationData.asked = 1;
+                        conversationData.asked = 1;
                         await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                     } else {
                         translatedResponse = await Translator.translate(
@@ -139,7 +139,7 @@ class MyBot {
                         translatedResponse = await Translator.translate(
                             `What mode of transport would you like to take?`,
                             turnContext.activity.detectedLanguage);
-                            conversationData.asked = 1;
+                        conversationData.asked = 1;
                         await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                     } else {
                         translatedResponse = await Translator.translate(
@@ -165,20 +165,18 @@ class MyBot {
                     conversationData.transportIndex = 0;
                     conversationData.destinationIndex = 0;
                     conversationData.originIndex = 0;
-                    //prompts the user for another destination if any
+                    // prompts the user for another destination if any
                     translatedResponse = await Translator.translate(
                         `If there is anywhere else you'd like to go, please let me know!`,
                         turnContext.activity.detectedLanguage);
                     await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                 }
-            } 
-            else {
+            }else{
                 translatedResponse = await Translator.translate(
                     `Sorry. I didn't understand that. I can only offer Transport information...`,
                     turnContext.activity.detectedLanguage);
                 await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
             }
-            //}
             // Update conversation state and save changes.
             await this.conversationData.set(turnContext, conversationData);
             await this.conversationState.saveChanges(turnContext);
