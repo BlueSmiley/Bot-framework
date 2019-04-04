@@ -54,18 +54,10 @@ class MyBot {
                         case 'Query::Destination':
                             userProfile.dest = entityData[index].entity;
                             conversationData.receivedDest = true;
-                            //translatedResponse = await Translator.translate(
-                            //    `destination is : ${ entityData[index].entity }`,
-                            //    turnContext.activity.detectedLanguage);
-                            //await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                             break;
                         case 'Query::Origin':
                             userProfile.origin = entityData[index].entity;
                             conversationData.receivedOrigin = true;
-                            //translatedResponse = await Translator.translate(
-                            //    `origin is : ${ entityData[index].entity }`,
-                            //    turnContext.activity.detectedLanguage);
-                            //await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                             break;
                         case 'Query::Transport':
                             if (entityData[index].entity === 'bus' ||
@@ -74,10 +66,6 @@ class MyBot {
                                 entityData[index].entity === 'luas') {
                                 userProfile.transport = entityData[index].entity;
                                 conversationData.receivedTransport = true;
-                                //translatedResponse = await Translator.translate(
-                                //    `transport is : ${ entityData[index].entity }`,
-                                //    turnContext.activity.detectedLanguage);
-                                //await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                             } else {
                                 translatedResponse = await Translator.translate(
                                     `I'm sorry, I can't offer information for that mode of transport.`,
@@ -183,45 +171,7 @@ class MyBot {
                         turnContext.activity.detectedLanguage);
                     await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                 }
-            } //else { //  intent === 'None'
-            //await turnContext.sendActivity(`${ conversationData.asked }`);
-                    
-            /*if (conversationData.asked === 1) {
-                if (conversationData.transportIndex > 0) {
-                    translatedResponse = await Translator.translate(
-                        `Your form of transport is ${ turnContext.activity.text }, is this correct?`,
-                        turnContext.activity.detectedLanguage);
-                        await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
-                    //await turnContext.sendActivity(`Your form of transport is ${ turnContext.activity.text }, is this correct?`);//    Needs better phrasing
-                } else if (conversationData.originIndex > 0) {
-                    translatedResponse = await Translator.translate(
-                        `Your origin is ${ turnContext.activity.text }, is this correct?`,
-                        turnContext.activity.detectedLanguage);
-                        await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
-                    //await turnContext.sendActivity(`Your origin is ${ turnContext.activity.text }, is this correct?`);//    Needs better phrasing
-                } else if (conversationData.destinationIndex > 0) {
-                    translatedResponse = await Translator.translate(
-                        `Your destination is ${ turnContext.activity.text }, is this correct?`,
-                        turnContext.activity.detectedLanguage);
-                        await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
-                    //await turnContext.sendActivity(`Your destination is ${ turnContext.activity.text }, is this correct?`);//    Needs better phrasing
-                } else {
-                    translatedResponse = await Translator.translate(
-                        `Sorry, I don't understand?`,
-                        turnContext.activity.detectedLanguage);
-                        await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
-                    //await turnContext.sendActivity(`Sorry, I don't understand?`);
-                }
-                conversationData.asked = 2;
-            } else if (conversationData.asked === 2) {
-                if (turnContext.activity.text === 'yes') {
-                    //await turnContext.sendActivity(`Load value into correct entity`);
-                    conversationData.asked = 0;
-                    //  Here's where the next question would be asked or the directions given as it is in the 'intent !== 'None'' 
-                } else if (turnContext.activity.text === `no`) {
-                    await turnContext.sendActivity(`Ask first question again?`);
-                }*/
-            //} 
+            } 
             else {
                 translatedResponse = await Translator.translate(
                     `Sorry. I didn't understand that. I can only offer Transport information...`,
