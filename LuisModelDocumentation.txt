@@ -1,4 +1,8 @@
 OriginToDestination:
+- whats the way to Malahide by dart?
+- any routes from tallaght to the point by luas?
+- Id like to go from raheny to dundalk by dart
+- Give me directions to rds simmons court
 - what buses can I get to Swords
 - find me a route to simmons court
 - I am visiting rotunda, dublis bus head office
@@ -46,6 +50,7 @@ OriginToDestination:
 - Bring me from Ranelagh to Milltown
 
 None:
+- Trinity College Dublin
 - Hello
 - yes
 - How to train my dog the quickest

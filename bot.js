@@ -60,17 +60,40 @@ class MyBot {
                             conversationData.receivedOrigin = true;
                             break;
                         case 'Query::Transport':
-                            if (entityData[index].entity === 'bus' ||
-                                entityData[index].entity === 'train' ||
-                                entityData[index].entity === 'dart' ||
-                                entityData[index].entity === 'luas') {
-                                userProfile.transport = entityData[index].entity;
+                            switch (entityData[index].entity) {
+                            /* indicates that the calculated route should prefer travel by bus. */
+                            case 'bus':
+                                userProfile.transport = 'bus';
                                 conversationData.receivedTransport = true;
-                            } else {
+                                break;
+                            /* indicates that the calculated route should prefer travel by subway. */
+                            case 'subway':
+                                userProfile.transport = 'subway';
+                                conversationData.receivedTransport = true;
+                                break;
+                            /* indicates that the calculated route should prefer travel by train. */
+                            case 'train':
+                                userProfile.transport = 'train';
+                                conversationData.receivedTransport = true;
+                                break;
+                            /* indicates that the calculated route should prefer travel by tram and light rail. */
+                            case 'luas':
+                            case 'tram':
+                                userProfile.transport = 'tram';
+                                conversationData.receivedTransport = true;
+                                break;
+                            /* indicates that the calculated route should prefer travel by train, tram, light rail, and subway. */
+                            case 'dart':
+                            case 'rail':
+                                userProfile.transport = 'rail';
+                                conversationData.receivedTransport = true;
+                                break;
+                            default:
                                 translatedResponse = await Translator.translate(
                                     `I'm sorry, I can't offer information for that mode of transport.`,
                                     turnContext.activity.detectedLanguage);
                                 await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
+                                break;
                             }
                             break;
                         default:
