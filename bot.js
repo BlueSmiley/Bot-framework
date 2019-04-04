@@ -171,7 +171,7 @@ class MyBot {
                         turnContext.activity.detectedLanguage);
                     await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                 }
-            }else{
+            } else {
                 translatedResponse = await Translator.translate(
                     `Sorry. I didn't understand that. I can only offer Transport information...`,
                     turnContext.activity.detectedLanguage);
