@@ -1,7 +1,7 @@
 # my-chat-bot
 Demonstrate the core capabilities of the Microsoft Bot Framework
 
-This bot has been created using [Bot Framework][1], it shows how to create a simple bot that accepts input from the user and echoes it back.
+This bot has been created using [Bot Framework][1], it greets the user and allows the user to ask for directions to their desired location. The bot detects the origin and destination, then calculates the route and returns this to the user. It is a multilingual bot which detects the user's language and replies to them in that language. If the language is not yet supported by the bot, it will reply to the user with an error message in their chosen language. 
 
 ## Prerequisites
 - [Node.js][4] version 8.5 or higher
@@ -9,6 +9,11 @@ This bot has been created using [Bot Framework][1], it shows how to create a sim
     # determine node version
     node --version
     ```
+- [Bot Framework Emulator][6] to test the bot logically
+- [LUIS][11] to detect the user's origin and destination
+- [Maps API][42] to calculate the correct travel route 
+- [Azure Cognitive Services][43] to detect language 
+
 # To run the bot
 - Install modules
     ```bash
@@ -25,8 +30,9 @@ This bot has been created using [Bot Framework][1], it shows how to create a sim
 - Install the Bot Framework Emulator version 4.2.0 or greater from [here][6]
 
 ## Connect to the bot using Bot Framework Emulator **v4**
+- Run the program as usual
 - Launch Bot Framework Emulator
-- File -> Open Bot Configuration
+- File -> Open Bot
 - Navigate to `my-chat-bot` folder
 - Select `my-chat-bot.bot` file
 
@@ -72,6 +78,7 @@ To learn more about deploying a bot to Azure, see [Deploy your bot to Azure][40]
 - [Restify][30]
 - [dotenv][31]
 
+
 [1]: https://dev.botframework.com
 [2]: https://www.typescriptlang.org
 [3]: https://www.typescriptlang.org/#download-links
@@ -91,3 +98,5 @@ To learn more about deploying a bot to Azure, see [Deploy your bot to Azure][40]
 [32]: https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-basics?view=azure-bot-service-4.0
 [40]: https://aka.ms/azuredeployment
 [41]: ./PREREQUISITES.md
+[42]: https://developers.google.com/maps/documentation/directions
+[43]: https://azure.microsoft.com/en-us/services/cognitive-services/

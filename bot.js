@@ -236,8 +236,7 @@ class MyBot {
             turnContext.activity.recipient.id !== turnContext.activity.membersAdded[0].id) {
             // If the Activity is a ConversationUpdate, send a greeting message to the user.
             await turnContext.sendActivity(`Hello! Nice to meet you, my name is Pika. 
-                                            \n I can help you plan your travel route.
-                                            \n You can speak to me in English, Spanish and French. 
+                                            \n I can help you plan your travel route. 
                                             \n Where would you like to go today?`);
         } else if (turnContext.activity.type !== ActivityTypes.ConversationUpdate) {
             // Respond to all other Activity types.
