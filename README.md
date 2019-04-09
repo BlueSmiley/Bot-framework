@@ -10,9 +10,9 @@ This bot has been created using [Bot Framework][1], it greets the user and allow
     node --version
     ```
 - [Bot Framework Emulator][6] to test the bot logically
-- [LUIS][11] to detect the user's origin and destination
-- [Maps API][42] to calculate the correct travel route 
-- [Azure Cognitive Services][43] to detect language 
+- [LUIS API key][11] to detect the user's origin and destination
+- [Maps API key][42] to calculate the correct travel route 
+- [Azure Cognitive Services API key][43] to detect language 
 
 # To run the bot
 - Install modules
