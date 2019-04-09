@@ -54,35 +54,46 @@ class MyBot {
                         case 'Query::Destination':
                             userProfile.dest = entityData[index].entity;
                             conversationData.receivedDest = true;
-                            //translatedResponse = await Translator.translate(
-                            //    `destination is : ${ entityData[index].entity }`,
-                            //    turnContext.activity.detectedLanguage);
-                            //await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                             break;
                         case 'Query::Origin':
                             userProfile.origin = entityData[index].entity;
                             conversationData.receivedOrigin = true;
-                            //translatedResponse = await Translator.translate(
-                            //    `origin is : ${ entityData[index].entity }`,
-                            //    turnContext.activity.detectedLanguage);
-                            //await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                             break;
                         case 'Query::Transport':
-                            if (entityData[index].entity === 'bus' ||
-                                entityData[index].entity === 'train' ||
-                                entityData[index].entity === 'dart' ||
-                                entityData[index].entity === 'luas') {
-                                userProfile.transport = entityData[index].entity;
+                            switch (entityData[index].entity) {
+                            /* indicates that the calculated route should prefer travel by bus. */
+                            case 'bus':
+                                userProfile.transport = 'bus';
                                 conversationData.receivedTransport = true;
-                                //translatedResponse = await Translator.translate(
-                                //    `transport is : ${ entityData[index].entity }`,
-                                //    turnContext.activity.detectedLanguage);
-                                //await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
-                            } else {
+                                break;
+                            /* indicates that the calculated route should prefer travel by subway. */
+                            case 'subway':
+                                userProfile.transport = 'subway';
+                                conversationData.receivedTransport = true;
+                                break;
+                            /* indicates that the calculated route should prefer travel by train. */
+                            case 'train':
+                                userProfile.transport = 'train';
+                                conversationData.receivedTransport = true;
+                                break;
+                            /* indicates that the calculated route should prefer travel by tram and light rail. */
+                            case 'luas':
+                            case 'tram':
+                                userProfile.transport = 'tram';
+                                conversationData.receivedTransport = true;
+                                break;
+                            /* indicates that the calculated route should prefer travel by train, tram, light rail, and subway. */
+                            case 'dart':
+                            case 'rail':
+                                userProfile.transport = 'rail';
+                                conversationData.receivedTransport = true;
+                                break;
+                            default:
                                 translatedResponse = await Translator.translate(
                                     `I'm sorry, I can't offer information for that mode of transport.`,
                                     turnContext.activity.detectedLanguage);
                                 await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
+                                break;
                             }
                             break;
                         default:
@@ -119,7 +130,7 @@ class MyBot {
                         translatedResponse = await Translator.translate(
                             'What is your destination',
                             turnContext.activity.detectedLanguage);
-                            conversationData.asked = 1;
+                        conversationData.asked = 1;
                         await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                     } else {
                         translatedResponse = await Translator.translate(
@@ -135,7 +146,7 @@ class MyBot {
                         translatedResponse = await Translator.translate(
                             `What is your origin?`,
                             turnContext.activity.detectedLanguage);
-                            conversationData.asked = 1;
+                        conversationData.asked = 1;
                         await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                     } else {
                         translatedResponse = await Translator.translate(
@@ -151,7 +162,7 @@ class MyBot {
                         translatedResponse = await Translator.translate(
                             `What mode of transport would you like to take?`,
                             turnContext.activity.detectedLanguage);
-                            conversationData.asked = 1;
+                        conversationData.asked = 1;
                         await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                     } else {
                         translatedResponse = await Translator.translate(
@@ -177,58 +188,18 @@ class MyBot {
                     conversationData.transportIndex = 0;
                     conversationData.destinationIndex = 0;
                     conversationData.originIndex = 0;
-                    //prompts the user for another destination if any
+                    // prompts the user for another destination if any
                     translatedResponse = await Translator.translate(
                         `If there is anywhere else you'd like to go, please let me know!`,
                         turnContext.activity.detectedLanguage);
                     await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
                 }
-            } //else { //  intent === 'None'
-            //await turnContext.sendActivity(`${ conversationData.asked }`);
-                    
-            /*if (conversationData.asked === 1) {
-                if (conversationData.transportIndex > 0) {
-                    translatedResponse = await Translator.translate(
-                        `Your form of transport is ${ turnContext.activity.text }, is this correct?`,
-                        turnContext.activity.detectedLanguage);
-                        await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
-                    //await turnContext.sendActivity(`Your form of transport is ${ turnContext.activity.text }, is this correct?`);//    Needs better phrasing
-                } else if (conversationData.originIndex > 0) {
-                    translatedResponse = await Translator.translate(
-                        `Your origin is ${ turnContext.activity.text }, is this correct?`,
-                        turnContext.activity.detectedLanguage);
-                        await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
-                    //await turnContext.sendActivity(`Your origin is ${ turnContext.activity.text }, is this correct?`);//    Needs better phrasing
-                } else if (conversationData.destinationIndex > 0) {
-                    translatedResponse = await Translator.translate(
-                        `Your destination is ${ turnContext.activity.text }, is this correct?`,
-                        turnContext.activity.detectedLanguage);
-                        await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
-                    //await turnContext.sendActivity(`Your destination is ${ turnContext.activity.text }, is this correct?`);//    Needs better phrasing
-                } else {
-                    translatedResponse = await Translator.translate(
-                        `Sorry, I don't understand?`,
-                        turnContext.activity.detectedLanguage);
-                        await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
-                    //await turnContext.sendActivity(`Sorry, I don't understand?`);
-                }
-                conversationData.asked = 2;
-            } else if (conversationData.asked === 2) {
-                if (turnContext.activity.text === 'yes') {
-                    //await turnContext.sendActivity(`Load value into correct entity`);
-                    conversationData.asked = 0;
-                    //  Here's where the next question would be asked or the directions given as it is in the 'intent !== 'None'' 
-                } else if (turnContext.activity.text === `no`) {
-                    await turnContext.sendActivity(`Ask first question again?`);
-                }*/
-            //} 
-            else {
+            } else {
                 translatedResponse = await Translator.translate(
                     `Sorry. I didn't understand that. I can only offer Transport information...`,
                     turnContext.activity.detectedLanguage);
                 await turnContext.sendActivity(extractTranlsatedText(translatedResponse));
             }
-            //}
             // Update conversation state and save changes.
             await this.conversationData.set(turnContext, conversationData);
             await this.conversationState.saveChanges(turnContext);

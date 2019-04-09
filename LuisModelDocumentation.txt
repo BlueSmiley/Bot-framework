@@ -1,4 +1,15 @@
 OriginToDestination:
+- whats the way to Malahide by dart?
+- any routes from tallaght to the point by luas?
+- Id like to go from raheny to dundalk by dart
+- Give me directions to rds simmons court
+- what buses can I get to Swords
+- find me a route to simmons court
+- I am visiting rotunda, dublis bus head office
+- going to O'Connell bridge bus stop
+- I'd like to go to Heuston Station
+- i'd like to go to the busaras bus station
+- i'm on o'connell street
 - train to heuston maybe
 - how to get to edmonstown by rail
 - i'd like to use a train to get there
@@ -39,6 +50,7 @@ OriginToDestination:
 - Bring me from Ranelagh to Milltown
 
 None:
+- Trinity College Dublin
 - Hello
 - yes
 - How to train my dog the quickest
@@ -54,3 +66,33 @@ None:
 - any good hotels near there?
 - who is the greatest of them all?
 - I am lost
+
+
+Entity types and names
+    Name: Query
+    Type: Heirarchical
+    Children:   
+        Name: Destination 
+        Type: Simple 
+
+        Name: Origin 
+        Type: Simple
+
+        Name: Transport
+        Type: Simple
+
+Sample Labelled Utterances:
+    How to get to edmonstown by rail
+    How to get to Query::Destination by Query::Transport
+
+    Whens the next bus from marlborough to broombridge
+    Whens the next Query::Transport from Query::Origin to Query::Destination
+
+    Find me a route to Simmons Court
+    Find me a route to Query::Destination
+
+
+
+
+
+
