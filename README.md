@@ -1,7 +1,7 @@
 # my-chat-bot
 Demonstrate the core capabilities of the Microsoft Bot Framework
 
-This bot has been created using [Bot Framework][1], it greets the user and allows the user to ask for directions to their desired location. The bot detects the origin and destination, then calculates the route and returns this to the user. It is a multilingual bot which detects the user's language and replies to them in that language. If the language is not yet supported by the bot, it will reply to the user with an error message in their chosen language. 
+This bot has been created using [Bot Framework][1], it greets the user and allows them to ask for directions to their desired location. The bot detects the origin and destination, then calculates the route and returns this to the user. It is a multilingual bot which detects the user's language and replies to them in that language. If the language is not yet supported by the bot, it will reply to the user with an error message in their chosen language. 
 
 ## Prerequisites
 - [Node.js][4] version 8.5 or higher
