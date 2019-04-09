@@ -15,6 +15,19 @@ This bot has been created using [Bot Framework][1], it greets the user and allow
 - [Azure Cognitive Services API key][43] to detect language 
 
 # To run the bot
+
+## Setup the environment
+
+Structure of `.env`
+
+```
+botFilePath="./my-chat-bot.bot"
+botFileSecret=""
+
+TRANSLATOR_TEXT_KEY=<TRANSLATOR_TEXT_API>
+MAPS_KEY=<GOOGLE_MAPS_API_KEY>
+```
+
 - Install modules
     ```bash
     npm install
